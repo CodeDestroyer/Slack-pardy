@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Log;
 use App\Http\Requests;
-use Maknz\Slack;
+use Maknz\Slack\Facades\Slack;
 use App\Http\Controllers\Controller;
 
 class GameHandler extends Controller
@@ -22,7 +22,8 @@ class GameHandler extends Controller
      */
     public function index()
     {
-        Slack::send($this->request->all());
+        Log::info($this->request->all());
+        Slack::send("worked");
     }
 
     /**
