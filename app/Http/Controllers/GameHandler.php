@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Log;
 use App\Http\Requests;
+use Maknz\Slack;
 use App\Http\Controllers\Controller;
 
 class GameHandler extends Controller
