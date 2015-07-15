@@ -24,18 +24,13 @@ class GameHandler extends Controller
      */
     public function index()
     {
-        $img = Image::canvas(600, 600, '#060CE9');
-        $img->rectangle(0, 0, 100, 100, function ($draw) {
-            $draw->background('rgba(255, 255, 255, 0.5)');
-            $draw->border(2, '#000');
-        });
-        
+
         //to("@pat")->send();
         Slack::to('@pat')->attach([
             'fallback' => 'Things are looking good',
-            'image_url'=> 'http://i.imgur.com/1COsVYp.png',
+            'image_url'=> 'http://ec2-52-2-158-226.compute-1.amazonaws.com/gameboard',
         ])->send('New alert from t!!he monitoring system');
-        return $img->response('jpg');
+
 
     }
 
@@ -44,9 +39,14 @@ class GameHandler extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function displayBoard()
     {
-        //
+        $img = Image::canvas(600, 600, '#060CE9');
+        $img->rectangle(0, 0, 100, 100, function ($draw) {
+            $draw->background('rgba(255, 255, 255, 0.5)');
+            $draw->border(2, '#000');
+        });
+        return $img->response('jpg');
     }
 
     /**
