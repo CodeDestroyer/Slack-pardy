@@ -26,8 +26,7 @@ class GameHandler extends Controller
     {
 
         //to("@pat")->send();
-        Slack::to('@pat')->attach([
-            'fallback' => 'Things are looking good',
+        Slack::attach([
             'image_url'=> 'http://ec2-52-2-158-226.compute-1.amazonaws.com/displayboard',
         ])->send('New alert from t!!he monitoring system');
 
