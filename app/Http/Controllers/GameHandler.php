@@ -42,7 +42,7 @@ class GameHandler extends Controller
         Slack::to('@pat')->attach([
             'fallback' => 'Things are looking good',
             'image_url'=> 'http://i.imgur.com/1COsVYp.png',
-        ])->send('New alert from the monitoring system');
+        ])->send('New alert from t!!he monitoring system');
         return $img->response('jpg');
 
     }
