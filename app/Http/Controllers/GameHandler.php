@@ -41,10 +41,57 @@ class GameHandler extends Controller
      */
     public function displayBoard()
     {
-        $img = Image::canvas(600, 600, '#060CE9');
-        $img->rectangle(0, 0, 100, 100, function ($draw) {
-            $draw->background('rgba(255, 255, 255, 0.5)');
-            $draw->border(2, '#000');
+        $backDrop = public_path()."/images/backboard.jpg";
+        $img = Image::make($backDrop);
+        $img->text('WORLD BOOK', 15, 30, function($font) {
+            $font->file(public_path()."/fonts/gyparody.ttf");
+            $font->size(12);
+            $font->color('#fff');
+
+        });
+        $img->text('DESCRIBES THE', 15, 45, function($font) {
+            $font->file(public_path()."/fonts/gyparody.ttf");
+            $font->size(12);
+            $font->color('#fff');
+
+        });
+        $img->text('"G" MAN', 15, 60, function($font) {
+            $font->file(public_path()."/fonts/gyparody.ttf");
+            $font->size(12);
+            $font->color('#fff');
+
+        });
+
+        $img->text('MONEY SLANG', 120, 40, function($font) {
+            $font->file(public_path()."/fonts/gyparody.ttf");
+            $font->size(12);
+            $font->color('#fff');
+
+        });
+
+        $img->text('3 LITTLE LETTERS', 230, 40, function($font) {
+            $font->file(public_path()."/fonts/gyparody.ttf");
+            $font->size(12);
+            $font->color('#fff');
+
+        });
+        $img->text('ON THE RADIO', 330, 40, function($font) {
+            $font->file(public_path()."/fonts/gyparody.ttf");
+            $font->size(12);
+            $font->color('#fff');
+
+        });
+        $img->text('BEGINNING & END', 440, 40, function($font) {
+            $font->file(public_path()."/fonts/gyparody.ttf");
+            $font->size(12);
+            $font->color('#fff');
+
+        });
+        $img->text('CELEB STUFF', 550, 40, function($font) {
+            $font->file(public_path()."/fonts/gyparody.ttf");
+            $font->size(12);
+            $font->color('#fff');
+
         });
         return $img->response('jpg');
     }
