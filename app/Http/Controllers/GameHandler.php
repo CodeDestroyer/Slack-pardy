@@ -30,7 +30,6 @@ class GameHandler extends Controller
             $draw->border(2, '#000');
         });
         $img->text('foo', 10, 20, function($font) {
-            $font->file(public_path()."fonts/gyparody.ttf");
             $font->size(24);
             $font->color('#fdf6e3');
             $font->align('center');
