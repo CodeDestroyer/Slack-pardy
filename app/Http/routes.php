@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('gamehandler', 'GameHandler@index');
+Route::get('gamehandler', 'GameHandler@index');

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Log;
+use Intervention\Image\Facades\Image;
+use App\Models\Question;
 use App\Http\Requests;
 use Maknz\Slack\Facades\Slack;
 use App\Http\Controllers\Controller;
@@ -22,8 +24,27 @@ class GameHandler extends Controller
      */
     public function index()
     {
-        Log::info($this->request->all());
-        Slack::send("worked");
+        $img = Image::canvas(600, 600, '#060CE9');
+        $img->rectangle(0, 0, 100, 100, function ($draw) {
+            $draw->background('rgba(255, 255, 255, 0.5)');
+            $draw->border(2, '#000');
+        });
+        $img->text('foo', 10, 20, function($font) {
+            $font->file(5);
+            $font->size(24);
+            $font->color('#fdf6e3');
+            $font->align('center');
+            $font->valign('top');
+            $font->angle(45);
+        });
+
+        //to("@pat")->send();
+        Slack::to('@pat')->attach([
+            'fallback' => 'Things are looking good',
+            'image_url'=> 'http://i.imgur.com/1COsVYp.png',
+        ])->send('New alert from the monitoring system');
+        return $img->response('jpg');
+
     }
 
     /**
