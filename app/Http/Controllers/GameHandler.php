@@ -29,14 +29,7 @@ class GameHandler extends Controller
             $draw->background('rgba(255, 255, 255, 0.5)');
             $draw->border(2, '#000');
         });
-        $img->text('foo', 10, 20, function($font) {
-            $font->size(24);
-            $font->color('#fdf6e3');
-            $font->align('center');
-            $font->valign('top');
-            $font->angle(45);
-        });
-
+        
         //to("@pat")->send();
         Slack::to('@pat')->attach([
             'fallback' => 'Things are looking good',
