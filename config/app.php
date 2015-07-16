@@ -149,6 +149,7 @@ return [
          */
         Maknz\Slack\SlackServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        App\Providers\MessageHandlerService::class,
 
     ],
 

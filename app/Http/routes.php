@@ -15,5 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('gamehandler', 'GameHandler@index');
+Route::Post('gamehandler', 'GameHandler@index');
 Route::get('displayboard', 'GameHandler@displayBoard');
