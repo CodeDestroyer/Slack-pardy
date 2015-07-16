@@ -24,7 +24,7 @@ class GameMasterService
     public function createNewGame($request)
     {
         //create Repo
-        $channel = $request->get("channel_name");
+        $channel = "#{$request->get("channel_name")}";
         $gameName = "game#{$request->get("channel_id")}";
         if (Cache::has($gameName))
         {

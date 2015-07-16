@@ -36,7 +36,6 @@ class GameHandler extends Controller
         $channel = $this->request->get('channel_name');
         $channelID = $this->request->get('channel_id');
         if (preg_match('/new game/i', $text)) {
-            Log::error("I got here");
             $this->_gameService->createNewGame($this->request);
         } else if (preg_match('/join game/i', $text))
         {
