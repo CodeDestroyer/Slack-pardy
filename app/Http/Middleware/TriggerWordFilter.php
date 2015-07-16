@@ -20,7 +20,6 @@ class TriggerWordFilter
             $triggerWord = $request->get('trigger_word');
             $text = trim(str_replace($triggerWord,"",$request->get("text")));
             $request->merge(array('text' => $text));
-            Log::error($request->all());
         }
         return $next($request);
     }
