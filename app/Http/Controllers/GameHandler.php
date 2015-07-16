@@ -44,7 +44,7 @@ class GameHandler extends Controller
     }
 
     public function ping(){
-        $text = array ("text"=>"Pong");
+        $text = array ("text"=>$this->request->all());
         return Response::json($text);
     }
 
