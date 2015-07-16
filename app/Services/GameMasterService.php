@@ -30,6 +30,7 @@ class GameMasterService
     protected $userKey;
     protected $boardKey;
     protected $boardLeaderKey;
+    protected $currentQuestionKey;
 
 
     public function __construct(IMessageHandler $handler, Request $request)
@@ -41,6 +42,7 @@ class GameMasterService
         $this->gameKey = "game#{$request->get("channel_id")}";
         $this->userKey = "game:players:#{$request->get("channel_id")}";
         $this->boardLeaderKey = "game:leader#{$request->get("channel_id")}";
+        $this->currentQuestionKey = "game:currentQuestion#{$request->get("channel_id")}";
 
     }
 
@@ -112,30 +114,38 @@ class GameMasterService
 
     public function pickQuestion($category,$value)
     {
+        if(Cache::has($this->currentQuestionKey)){
+            $this->handler->sendMessageMention($this->channel, $this->userName, "Question is picked");
+            exit;
+        }
         if (Cache::has($this->boardLeaderKey)) {
             $boardLeader = Cache::get($this->boardLeaderKey);
            if($this->userName != $boardLeader){
                $this->handler->sendMessageMention($this->channel, $this->userName, "you dont have control");
            } else {
-               $this->grabQuestion($category,$value);
-               //Trigger time
+               $this->displayQuestion($category,$value);
            }
         } else {
             $this->handler->sendMessageMention($this->channel, $this->userName, trans('gamecommands.noGame'));
         }
     }
 
-    public function grabQuestion($category,$value){
+    public function displayQuestion($category,$value){
         $question = Question::where('category', $category)->where('value', $value)->active()->random()->first();
         if(empty($question)){
             $this->handler->sendMessageMention($this->channel, $this->userName, "Question does not exist");
         } else {
+            //TODO Create Relationship
+            $currentCategory = Category::where('id',$question->category)->first();
             $this->handler->sendMessage($this->channel,
                 trans('gamecommands.question',
-                        ['category' => $question->category,
+                        ['category' => $currentCategory->name,
                         'total'=>$question->value,
                         'question'=>$question->question]));
 
+
         }
+        Cache::put($this->currentQuestionKey, $question,1);
+
     }
 }
