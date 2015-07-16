@@ -19,9 +19,9 @@ class TriggerWordFilter
         if ($request->has('trigger_word') && $request->has('text')) {
             Log::error("Im here");
             $triggerWord = $request->get('trigger_word');
-            Log::warn($triggerWord);
+            Log::error($triggerWord);
             $text = trim(str_replace($triggerWord,"",$request->get("text")));
-            Log::warn($text);
+            Log::error($text);
             $request->merge(array('text' => $text));
         }
         Log::warn("didnt get in");
