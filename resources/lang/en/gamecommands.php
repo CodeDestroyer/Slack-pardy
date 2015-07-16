@@ -9,5 +9,8 @@ return [
     'joined' => "Has Joined the Game",
     'noGame' => "No game to Join",
     'gameStarted' => "Sorry Game has already started",
+    'boardControl'=> ":name has the board, with a game total of $:total",
+    'question' => "The category is `:category` for *$:total:* `:question`",
+
 
 ];
