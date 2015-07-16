@@ -13,7 +13,7 @@ class UpdateFkCategories extends Migration
      */
     public function up()
     {
-        //DB::update('UPDATE questions q JOIN categories c ON q.category = c.name SET q.category = c.id');
+        DB::update('UPDATE questions q JOIN categories c ON q.category = c.name SET q.category = c.id');
         Schema::table('questions', function (Blueprint $table) {
             $table->integer('category')->change();
         });

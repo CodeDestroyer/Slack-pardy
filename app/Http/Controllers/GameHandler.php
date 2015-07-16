@@ -38,7 +38,7 @@ class GameHandler extends Controller
             $this->_gameService->createNewGame($this->request);
         } else if (preg_match('/join game/i', $text))
         {
-            //Insert into game
+            $this->_gameService->joinGame($this->request);
         }
 
         /**

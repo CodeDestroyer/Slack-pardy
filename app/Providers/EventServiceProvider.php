@@ -13,9 +13,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [];
-    protected $subscribe = [
-        'App\Listeners\SlackEventListener',
-    ];
+
     /**
      * Register any other events for your application.
      *

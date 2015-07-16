@@ -18,4 +18,9 @@ class SlackMessageHandler implements IMessageHandler
         Slack::to($recipient)->send($message);
     }
 
+    public function sendMessageMention($recipient, $user, $message)
+    {
+        Slack::to($recipient)->send("@{$user} - {$message}");
+    }
+
 }

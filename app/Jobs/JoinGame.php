@@ -6,6 +6,7 @@ use App\Jobs\Job;
 use App\Services\Contracts\IMessageHandler;
 use Event;
 use Log;
+use Cache;
 use App\Events\SignupClosed;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,15 +21,17 @@ class JoinGame extends Job implements SelfHandling, ShouldQueue
 
     public $recipient;
     public $message;
+    public $gameName;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($recipient)
+    public function __construct($request)
     {
-        $this->recipient = "#".$recipient;
+        $this->recipient = "#".$request->get("channel_name");
         $this->message = self::SIGNUP_CLOSED;
+        $this->gameName = "game#{$request->get("channel_id")}";
     }
 
     /**
@@ -40,9 +43,7 @@ class JoinGame extends Job implements SelfHandling, ShouldQueue
     {
 
         $messageHandler->sendMessage($this->recipient,$this->message);
-        //SetupGame
-        //PickPlayerOne\
-        //Send board
-        //pass in board
+        Cache::forever($this->gameName, false);
+
     }
 }
