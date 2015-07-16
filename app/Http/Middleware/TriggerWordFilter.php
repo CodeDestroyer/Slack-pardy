@@ -17,14 +17,11 @@ class TriggerWordFilter
     {
 
         if ($request->has('trigger_word') && $request->has('text')) {
-            Log::error("Im here");
             $triggerWord = $request->get('trigger_word');
-            Log::error($triggerWord);
             $text = trim(str_replace($triggerWord,"",$request->get("text")));
-            Log::error($text);
             $request->merge(array('text' => $text));
+            Log::error($request->all());
         }
-        Log::warn("didnt get in");
         return $next($request);
     }
 }
