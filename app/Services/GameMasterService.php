@@ -41,9 +41,8 @@ class GameMasterService
     {
         $userKey = "player#{$request->get("channel_id")}:{$request->get('user_id')}";
         $gameName = "game#{$request->get("channel_id")}";
-        $channel = $request->get("channel_name");
+        $channel = "#{$request->get("channel_name")}";
         $userName = $request->get("user_name");
-        dump(Cache::get($gameName));
         if(!Cache::has($gameName)){
             $this->handler->sendMessageMention($channel,$userName,trans('gamecommands.noGame'));
             return;
