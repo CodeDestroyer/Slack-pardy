@@ -32,74 +32,13 @@ class GameHandler extends Controller
     public function index()
     {
         $text = $this->request->get('text');
-        
         if (preg_match('/new game/i', $text)) {
             $this->_gameService->createNewGame($this->request);
-        } else if (preg_match('/join game/i', $text))
-        {
+        } else if (preg_match('/join game/i', $text)) {
             $this->_gameService->joinGame($this->request);
         }
 
     }
 
-    public function ping(){
-        $text = array ("text"=>$this->request->all());
-        return Response::json($text);
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

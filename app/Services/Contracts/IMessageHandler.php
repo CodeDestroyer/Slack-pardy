@@ -12,4 +12,5 @@ namespace App\Services\Contracts;
 interface IMessageHandler
 {
     public function sendMessage($recipient,$message);
+    public function displayBoard($recipient,$categories);
 }
