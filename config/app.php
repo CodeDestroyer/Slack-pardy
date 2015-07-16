@@ -148,7 +148,6 @@ return [
          * Installed Providers
          */
         Maknz\Slack\SlackServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
         App\Providers\MessageHandlerService::class,
 
     ],
@@ -199,7 +198,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
         'Slack'     => Maknz\Slack\Facades\Slack::class,
-        'Image'     => Intervention\Image\Facades\Image::class,
 
     ],
 
