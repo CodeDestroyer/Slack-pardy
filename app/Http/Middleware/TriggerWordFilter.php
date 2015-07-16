@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+use Log;
 class TriggerWordFilter
 {
     /**
@@ -15,6 +15,7 @@ class TriggerWordFilter
      */
     public function handle($request, Closure $next)
     {
+        Log::debug($request->all());
         return $next($request);
     }
 }
