@@ -16,4 +16,4 @@ Route::get('/', function () {
 });
 
 Route::Post('gamehandler', 'GameHandler@index');
-Route::get('displayboard', 'GameHandler@displayBoard');
+Route::Post('ping', 'GameHandler@ping');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Log;
 use DB;
+use Response;
 use App\Models\Question;
 use App\Services\GameMasterService;
 use App\Jobs\JoinGame;
@@ -40,18 +41,11 @@ class GameHandler extends Controller
             $this->_gameService->joinGame($this->request);
         }
 
-        /**
-         *
-        $test = Category::active()->random()->take(6)->get();
-        foreach ($test as $category){
-            echo $category->name;
-        }
+    }
 
-        $job = (new JoinGame())->delay(60);
-
-        $this->dispatch($job);
-         * */
-
+    public function ping(){
+        $text = array ("text"=>"Pong");
+        return Response::json($text);
     }
 
     /**

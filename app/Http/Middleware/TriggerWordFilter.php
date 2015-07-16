@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Log;
+
 class TriggerWordFilter
 {
     /**
@@ -15,7 +15,7 @@ class TriggerWordFilter
      */
     public function handle($request, Closure $next)
     {
-        Log::info($request);
+
         if ($request->has('trigger_word') && $request->has('text')) {
             $triggerWord = $request->get('trigger_word');
             $text = trim(str_replace($triggerWord,"",$request->get("text")));
