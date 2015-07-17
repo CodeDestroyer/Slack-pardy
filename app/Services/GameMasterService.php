@@ -5,14 +5,13 @@
  * Date: 7/15/15
  * Time: 8:47 AM
  */
-
+//TODO take out functionality that does not have Request
 namespace App\Services;
 
 use App\Jobs\JoinGame;
 use Cache;
-use App\Events\NewGame;
+use App\Jobs\HandleQuestionTiming;
 use App\Models\Question;
-use Event;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -87,7 +86,7 @@ class GameMasterService
         if(empty($board)){
             $categories = Category::active()->random()->take(6)->get();
             foreach ($categories as $category){
-                $board[] = array(
+                $board[$category->name] = array(
                     "id" => $category->id,
                     "name" => $category->name,
                     "available" => array(200,400,600,800,1000)
@@ -123,7 +122,10 @@ class GameMasterService
            if($this->userName != $boardLeader){
                $this->handler->sendMessageMention($this->channel, $this->userName, "you dont have control");
            } else {
-               $this->displayQuestion($category,$value);
+               $question = $this->displayQuestion($category,$value);
+               $this->dispatch((new HandleQuestionTiming($this->request,$question))->delay(30));
+
+               //
            }
         } else {
             $this->handler->sendMessageMention($this->channel, $this->userName, trans('gamecommands.noGame'));
@@ -134,18 +136,42 @@ class GameMasterService
         $question = Question::where('category', $category)->where('value', $value)->active()->random()->first();
         if(empty($question)){
             $this->handler->sendMessageMention($this->channel, $this->userName, "Question does not exist");
+            exit;
         } else {
             //TODO Create Relationship
             $currentCategory = Category::where('id',$question->category)->first();
+            $question->category = $currentCategory->name;
             $this->handler->sendMessage($this->channel,
                 trans('gamecommands.question',
-                        ['category' => $currentCategory->name,
+                        ['category' => $question->category,
                         'total'=>$question->value,
                         'question'=>$question->question]));
 
 
         }
         Cache::put($this->currentQuestionKey, $question,1);
+        return $question;
+    }
+
+    public function answerQuestion()
+    {
 
     }
+
+    public function updateGameBoard($boardKey,$category,$value)
+    {
+        $board = Cache::get($boardKey);
+        $categories = $board[$category]['available'];
+        $values = array_diff($categories,[$value]);
+        $board[$category]['available'] = $values;
+        if (count($values) == 0) {
+            unset($board[$category]);
+        }
+
+        Cache::forever($boardKey, $board);
+
+
+}
+
+
 }
