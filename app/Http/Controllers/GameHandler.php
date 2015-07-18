@@ -36,6 +36,14 @@ class GameHandler extends Controller
         else if (preg_match('/pick (\d+) (\d+)/i', $text,$matches)) {
             $this->_gameService->pickQuestion($matches[1],$matches[2]);
         }
+        else {
+            $this->_gameService->answerQuestion($text);
+        }
+        //show board
+        //show scores
+        //pick random
+        //end game
+        //help
 
 
     }

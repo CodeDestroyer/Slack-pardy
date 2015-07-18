@@ -23,5 +23,10 @@ class User{
     {
         return $this->score;
     }
+
+    public function updateScore($value)
+    {
+        $this->score += $value;
+    }
 }
 
