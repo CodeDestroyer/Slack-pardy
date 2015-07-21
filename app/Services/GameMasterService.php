@@ -59,7 +59,7 @@ class GameMasterService
         }
         $this->handler->sendMessage($this->channel, trans('gamecommands.newgame'));
         Cache::forever($this->gameKey, true);
-        $this->dispatch((new JoinGame($this->request))->delay(0));
+        $this->dispatch((new JoinGame($this->request))->delay(60));
     }
 
 

@@ -32,11 +32,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameMasterService.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameMasterService.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Services/GameMasterService.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.2941175">
-              <caret line="61" column="63" selection-start-line="61" selection-start-column="63" selection-end-line="61" selection-end-column="63" />
+            <state vertical-scroll-proportion="-5.529197">
+              <caret line="61" column="64" selection-start-line="61" selection-start-column="64" selection-end-line="61" selection-end-column="64" />
               <folding>
                 <element signature="e#175#197#0#PHP" expanded="true" />
               </folding>
@@ -54,10 +54,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JoinGame.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="JoinGame.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Jobs/JoinGame.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6347826">
+            <state vertical-scroll-proportion="-15.208333">
               <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
               <folding>
                 <element signature="e#28#56#0#PHP" expanded="true" />
@@ -171,8 +171,8 @@
         <option value="$PROJECT_DIR$/app/Jobs/HandleQuestionTiming.php" />
         <option value="$PROJECT_DIR$/app/Services/Adapters/SlackMessageHandler.php" />
         <option value="$PROJECT_DIR$/app/Services/Contracts/IMessageHandler.php" />
-        <option value="$PROJECT_DIR$/app/Services/GameMasterService.php" />
         <option value="$PROJECT_DIR$/app/Jobs/JoinGame.php" />
+        <option value="$PROJECT_DIR$/app/Services/GameMasterService.php" />
       </list>
     </option>
   </component>
@@ -827,22 +827,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Services/GameMasterService.php">
+    <entry file="file://$PROJECT_DIR$/app/Jobs/JoinGame.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.2941175">
-          <caret line="61" column="63" selection-start-line="61" selection-start-column="63" selection-end-line="61" selection-end-column="63" />
+        <state vertical-scroll-proportion="-15.208333">
+          <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
           <folding>
-            <element signature="e#175#197#0#PHP" expanded="true" />
+            <element signature="e#28#56#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Jobs/JoinGame.php">
+    <entry file="file://$PROJECT_DIR$/app/Services/GameMasterService.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6347826">
-          <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+        <state vertical-scroll-proportion="-5.529197">
+          <caret line="61" column="64" selection-start-line="61" selection-start-column="64" selection-end-line="61" selection-end-column="64" />
           <folding>
-            <element signature="e#28#56#0#PHP" expanded="true" />
+            <element signature="e#175#197#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
