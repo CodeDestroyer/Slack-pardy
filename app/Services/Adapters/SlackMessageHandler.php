@@ -28,7 +28,7 @@ class SlackMessageHandler implements IMessageHandler
         $boardString = "";
         foreach($categories as $category)
         {
-            $questions = implode(',',$category['available']);
+            $questions = implode(' | ',$category['available']);
             $boardString.= "*#{$category['id']} - {$category['name']}*: \n {$questions}\n\n";
         }
         Slack::to($recipient)->send($boardString);

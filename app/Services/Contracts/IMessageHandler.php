@@ -13,4 +13,5 @@ interface IMessageHandler
 {
     public function sendMessage($recipient,$message);
     public function displayBoard($recipient,$categories);
+    public function sendMessageMention($recipient, $user, $message);
 }

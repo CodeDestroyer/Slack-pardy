@@ -50,6 +50,13 @@ class JoinGame extends Job implements SelfHandling, ShouldQueue
     {
 
         $messageHandler->sendMessage($this->recipient,$this->message);
+        $users = Cache::get($this->userKey);
+        if (count($users) <= 2){
+            $messageHandler->sendMessage($this->recipient,"Please get some friends and try again with 2 or more people");
+            Cache::forget($this->userKey);
+            Cache::forget($this->gameKey);
+            return;
+        }
         Cache::forever($this->gameKey, false);
         $board = $gameService->getGameBoard($this->boardKey);
         $messageHandler->displayBoard($this->recipient,$board);

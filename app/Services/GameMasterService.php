@@ -59,7 +59,7 @@ class GameMasterService
         }
         $this->handler->sendMessage($this->channel, trans('gamecommands.newgame'));
         Cache::forever($this->gameKey, true);
-        $this->dispatch((new JoinGame($this->request))->delay(60));
+        $this->dispatch((new JoinGame($this->request))->delay(0));
     }
 
 
@@ -263,6 +263,7 @@ class GameMasterService
                         "`alex leaderboard` - show scores for the given game\n".
                         "`alex show board` - show the game board for the given game\n".
                         "`alex new leader` - will randomly pick new board leader\n".
+            "`alex end game` - will end current game\n".
             "`alex {answer}` - how to answer a question.. if the answer is poop.. alex poop";
         $this->handler->sendMessage($this->channel,$text);
     }
