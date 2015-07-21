@@ -116,7 +116,6 @@ class GameMasterService
         }
         $users = Cache::get($userKey);
         $userName = array_rand($users, 1);
-        LOG::error($userName);
         Cache::forever($boardLeaderKey, $userName);
         $total = $this->getUserScoreByName($userKey,$userName);
         $this->handler->sendMessage($recipient,
@@ -213,7 +212,8 @@ class GameMasterService
         $board = $this->getGameBoard($this->boardKey);
         $this->handler->displayBoard($this->channel,$board);
         $total = $this->getUserScoreByName($this->userKey,$name);
-        $this->handler->sendMessageMention($this->channel, $this->userName, "Still has the board $".$total);
+        Cache::forever($this->boardLeaderKey, $this->userName);
+        $this->handler->sendMessageMention($this->channel, $this->userName, "has the board $".$total);
         Cache::forget($this->currentQuestionKey);
     }
 
