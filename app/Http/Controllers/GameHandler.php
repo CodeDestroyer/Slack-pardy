@@ -52,14 +52,14 @@ class GameHandler extends Controller
         {
             $this->_gameService->displayBoard();
         }
+        else if (preg_match('/end game/i', $text))
+        {
+            $this->_gameService->endGame();
+        }
         else {
             $this->_gameService->answerQuestion($text);
         }
-        //show board
-        //show scores
-        //pick random
-        //end game
-        //help
+
 
 
     }

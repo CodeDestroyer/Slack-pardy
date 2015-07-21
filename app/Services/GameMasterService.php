@@ -142,7 +142,7 @@ class GameMasterService
            } else {
                $question = $this->displayQuestion($category, $value);
                if (!is_null($question)){
-                   $this->dispatch((new HandleQuestionTiming($this->request, $question))->delay(60));
+                   $this->dispatch((new HandleQuestionTiming($this->request, $question))->delay(50));
            }
 
                //
@@ -217,7 +217,8 @@ class GameMasterService
         Cache::forget($this->currentQuestionKey);
     }
 
-    public function updateGameBoard($boardKey,$category,$value,$recipient = null,$userKey= null)
+    public function updateGameBoard($boardKey,$category,$value,$recipient = null,$gameKey = null,$boardLeaderKey = null,
+                                    $userKey = null)
     {
         $board = Cache::get($boardKey);
         if(isset($board[$category]))
@@ -231,7 +232,7 @@ class GameMasterService
             Cache::forever($boardKey, $board);
         }
         if(count($board) == 0){
-            $this->endGame($recipient,$userKey);
+            $this->endGame($recipient,$userKey,$gameKey,$boardKey,$boardLeaderKey);
         }
 
 
@@ -240,13 +241,11 @@ class GameMasterService
     {
         $userKey = VarHelper::assignIfNotEmpty($userKey,$this->userKey);
         $channel = VarHelper::assignIfNotEmpty($channel,$this->channel);
-        dump($userKey);
         $users = Cache::get($userKey);
         $returnText = "";
         foreach ($users as $user){
             $returnText .= "{$user->getName()} with a total of \${$user->getScore()}\n";
         }
-        dump($returnText);
         $this->handler->sendMessage($channel,$returnText);
 
     }
@@ -276,15 +275,20 @@ class GameMasterService
 
     }
 
-    private function endGame($recipient = null,$userKey = null)
+    public function endGame($recipient = null,$userKey = null,$gameKey = null, $boardKey = null, $boardLeaderKey = null)
     {
         $recipient = VarHelper::assignIfNotEmpty($recipient,$this->channel);
+        $gameKey = VarHelper::assignIfNotEmpty($gameKey,$this->gameKey);
+        $boardKey = VarHelper::assignIfNotEmpty($boardKey,$this->boardKey);
+        $boardLeaderKey = VarHelper::assignIfNotEmpty($boardLeaderKey,$this->boardLeaderKey);
+        $userKey = VarHelper::assignIfNotEmpty($userKey, $this->userKey);
         $this->handler->sendMessage($recipient, "The Game is Over");
         $this->showLeaderBoards($userKey,$recipient);
-        Cache::forget($this->gameKey);
-        Cache::forget($this->userKey);
-        Cache::forget($this->boardKey);
-        Cache::forget($this->boardLeaderKey);
+
+        Cache::forget($boardKey);
+        Cache::forget($boardLeaderKey);
+        Cache::forget($userKey);
+        Cache::forget($gameKey);
         exit;
 
     }
