@@ -63,14 +63,11 @@ class HandleQuestionTiming extends Job implements SelfHandling, ShouldQueue
         if($question->id != $this->questionID){
             return;
         }
-        $messageHandler->sendMessage($this->recipient,"Times up Bitch the answer was ".$question->answer);
         Cache::forget($this->currentQuestionKey);
-        $gameService->updateGameBoard($this->boardKey,$question->category,$question->value);
+        $gameService->updateGameBoard($this->boardKey,$question->category,$question->value,$this->recipient,$this->userKey);
         $board = $gameService->getGameBoard($this->boardKey);
         $messageHandler->displayBoard($this->recipient,$board);
-        $name = $gameService->pickRandomBoardLeader($this->boardLeaderKey,$this->userKey);
-        $total = $gameService->getUserScoreByName($this->userKey,$name);
-        $messageHandler->sendMessage($this->recipient,
-            trans('gamecommands.boardControl', ['name' => $name, 'total'=>$total]));
+        $messageHandler->sendMessage($this->recipient,"Times up Bitch the answer was `".$question->answer."`");
+        $gameService->pickRandomBoardLeader($this->boardLeaderKey,$this->userKey,$this->recipient);
     }
 }

@@ -149,6 +149,7 @@ return [
          */
         Maknz\Slack\SlackServiceProvider::class,
         App\Providers\MessageHandlerService::class,
+        App\Providers\HelperServiceProvider::class,
 
     ],
 
@@ -198,6 +199,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
         'Slack'     => Maknz\Slack\Facades\Slack::class,
+        'VarHelper' => App\Facades\Variable::class,
 
     ],
 

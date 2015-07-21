@@ -24,6 +24,11 @@ class User{
         return $this->score;
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
     public function updateScore($value)
     {
         $this->score += $value;

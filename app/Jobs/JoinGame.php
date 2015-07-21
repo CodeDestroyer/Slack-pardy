@@ -53,9 +53,6 @@ class JoinGame extends Job implements SelfHandling, ShouldQueue
         Cache::forever($this->gameKey, false);
         $board = $gameService->getGameBoard($this->boardKey);
         $messageHandler->displayBoard($this->recipient,$board);
-        $name = $gameService->pickRandomBoardLeader($this->boardLeaderKey,$this->userKey);
-        $total = $gameService->getUserScoreByName($this->userKey,$name);
-        $messageHandler->sendMessage($this->recipient,
-            trans('gamecommands.boardControl', ['name' => $name, 'total'=>$total]));
+        $gameService->pickRandomBoardLeader($this->boardLeaderKey,$this->userKey,$this->recipient);
     }
 }

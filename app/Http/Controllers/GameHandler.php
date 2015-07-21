@@ -36,6 +36,22 @@ class GameHandler extends Controller
         else if (preg_match('/pick (\d+) (\d+)/i', $text,$matches)) {
             $this->_gameService->pickQuestion($matches[1],$matches[2]);
         }
+        else if (preg_match('/show leaderboard/i', $text))
+        {
+            $this->_gameService->showLeaderBoards();
+        }
+        else if (preg_match('/help/i', $text))
+        {
+           $this->_gameService->printHelp();
+        }
+        else if (preg_match('/new leader/i', $text))
+        {
+            $this->_gameService->pickRandomBoardLeader();
+        }
+        else if (preg_match('/show board/i', $text))
+        {
+            $this->_gameService->displayBoard();
+        }
         else {
             $this->_gameService->answerQuestion($text);
         }

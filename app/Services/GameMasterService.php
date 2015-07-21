@@ -10,7 +10,9 @@ namespace App\Services;
 
 use App\Jobs\JoinGame;
 use Cache;
+use Log;
 use DB;
+use App\Facades\VarHelper;
 use App\Jobs\HandleQuestionTiming;
 use App\Models\Question;
 use App\Models\Category;
@@ -101,17 +103,29 @@ class GameMasterService
         return $board;
     }
 
-    public function pickRandomBoardLeader($boardLeaderKey,$userKey)
+    public function pickRandomBoardLeader($boardLeaderKey = null,$userKey = null,$recipient = null)
     {
-
+        if(is_null($userKey)){
+            $userKey = $this->userKey;
+        }
+        if(is_null($boardLeaderKey)){
+            $boardLeaderKey = $this->boardLeaderKey;
+        }
+        if(is_null($recipient)){
+            $recipient = $this->channel;
+        }
         $users = Cache::get($userKey);
         $userName = array_rand($users, 1);
+        LOG::error($userName);
         Cache::forever($boardLeaderKey, $userName);
-        return $userName;
+        $total = $this->getUserScoreByName($userKey,$userName);
+        $this->handler->sendMessage($recipient,
+            trans('gamecommands.boardControl', ['name' => $userName, 'total'=>$total]));
+
     }
 
     public function getUserScoreByName($userKey,$name){
-        $users = Cache::get($userKey, array());
+        $users = Cache::get($userKey);
         return $users[$name]->getScore();
     }
 
@@ -126,8 +140,10 @@ class GameMasterService
            if($this->userName != $boardLeader){
                $this->handler->sendMessageMention($this->channel, $this->userName, "you dont have control");
            } else {
-               $question = $this->displayQuestion($category,$value);
-               $this->dispatch((new HandleQuestionTiming($this->request,$question))->delay(50));
+               $question = $this->displayQuestion($category, $value);
+               if (!is_null($question)){
+                   $this->dispatch((new HandleQuestionTiming($this->request, $question))->delay(60));
+           }
 
                //
            }
@@ -140,9 +156,12 @@ class GameMasterService
         //TODO:: Check to see if question is apart of gameboard.
         $question = Question::where('category', $category)->where('value', $value)->active()->random()->first();
         if(empty($question)){
+            $category = Category::find($category);
             $this->handler->sendMessageMention($this->channel, $this->userName, "Question does not exist, probaby double jep");
-
-            return;
+            $this->updateGameBoard($this->boardKey,$category->name,$value);
+            $board = $this->getGameBoard($this->boardKey);
+            $this->handler->displayBoard($this->channel,$board);
+            return null;
         } else {
             //TODO Create Relationship
             $currentCategory = Category::where('id',$question->category)->first();
@@ -198,20 +217,56 @@ class GameMasterService
         Cache::forget($this->currentQuestionKey);
     }
 
-    public function updateGameBoard($boardKey,$category,$value)
+    public function updateGameBoard($boardKey,$category,$value,$recipient = null,$userKey= null)
     {
         $board = Cache::get($boardKey);
-        $categories = $board[$category]['available'];
-        $values = array_diff($categories,[$value]);
-        $board[$category]['available'] = $values;
-        if (count($values) == 0) {
-            unset($board[$category]);
+        if(isset($board[$category]))
+        {
+            $categories = $board[$category]['available'];
+            $values = array_diff($categories,[$value]);
+            $board[$category]['available'] = $values;
+            if (count($values) == 0) {
+                unset($board[$category]);
+            }
+            Cache::forever($boardKey, $board);
         }
-
-        Cache::forever($boardKey, $board);
+        if(count($board) == 0){
+            $this->endGame($recipient,$userKey);
+        }
 
 
 }
+    public function showLeaderBoards($userKey = null,$channel = null)
+    {
+        $userKey = VarHelper::assignIfNotEmpty($userKey,$this->userKey);
+        $channel = VarHelper::assignIfNotEmpty($channel,$this->channel);
+        dump($userKey);
+        $users = Cache::get($userKey);
+        $returnText = "";
+        foreach ($users as $user){
+            $returnText .= "{$user->getName()} with a total of \${$user->getScore()}\n";
+        }
+        dump($returnText);
+        $this->handler->sendMessage($channel,$returnText);
+
+    }
+    public function displayBoard(){
+
+        $board = $this->getGameBoard($this->boardKey);
+        $this->handler->displayBoard($this->channel,$board);
+
+    }
+    public function printHelp()
+    {
+        $text =  "`alex new game` - Starts a new game and a 60 second timer to join \n".
+                        "`alex join game` - Join a game in the given channel.\n".
+                        "`alex pick {catNum} {value}` - catNum is the id of the category.\n".
+                        "`alex leaderboard` - show scores for the given game\n".
+                        "`alex show board` - show the game board for the given game\n".
+                        "`alex new leader` - will randomly pick new board leader\n".
+            "`alex {answer}` - how to answer a question.. if the answer is poop.. alex poop";
+        $this->handler->sendMessage($this->channel,$text);
+    }
     private function updateScore($value,$player,$correct){
 
         $users = Cache::get($this->userKey);
@@ -220,6 +275,21 @@ class GameMasterService
         Cache::forever($this->userKey, $users);
 
     }
+
+    private function endGame($recipient = null,$userKey = null)
+    {
+        $recipient = VarHelper::assignIfNotEmpty($recipient,$this->channel);
+        $this->handler->sendMessage($recipient, "The Game is Over");
+        $this->showLeaderBoards($userKey,$recipient);
+        Cache::forget($this->gameKey);
+        Cache::forget($this->userKey);
+        Cache::forget($this->boardKey);
+        Cache::forget($this->boardLeaderKey);
+        exit;
+
+    }
+
+
 
 
 }
